@@ -13,6 +13,7 @@ const Login = () => {
         <h1 className="text-3xl font-bold mb-2 text-center text-primary">Unleash Your Data Power.</h1>
         <p className="text-lg text-muted-foreground mb-6 text-center">Join Data Combat for Free!</p>
         <Auth
+          key={theme} // Added key to force re-render on theme change
           supabaseClient={supabase}
           providers={["google", "linkedin"]}
           appearance={{
@@ -64,6 +65,7 @@ const Login = () => {
               },
             },
           }}
+          defaultView="sign_in" // Explicitly set default view to sign_in
         />
         <p className="text-center text-sm text-muted-foreground mt-4">
           Start your 15-day free trial today! No credit card required.
