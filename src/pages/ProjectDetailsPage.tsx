@@ -7,8 +7,9 @@ import { ArrowLeft, UploadCloud, MessageSquareText } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import FileUpload from "@/components/FileUpload"; // Will create this next
-import AIChat from "@/components/AIChat"; // Will enhance this next
+import FileUpload from "@/components/FileUpload";
+import AIChat from "@/components/AIChat";
+import DataTableDisplay from "@/components/DataTableDisplay"; // Import DataTableDisplay
 
 interface Project {
   id: string;
@@ -22,15 +23,26 @@ const ProjectDetailsPage = () => {
   const navigate = useNavigate();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProject = async () => {
+    const fetchProjectAndUser = async () => {
       if (!id) {
         showError("Project ID is missing.");
         navigate("/");
         return;
       }
       setLoading(true);
+
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData.user) {
+        showError("You must be logged in to view project details.");
+        navigate("/login");
+        setLoading(false);
+        return;
+      }
+      setUserId(userData.user.id);
+
       const { data, error } = await supabase
         .from("projects")
         .select("*")
@@ -50,7 +62,7 @@ const ProjectDetailsPage = () => {
       setLoading(false);
     };
 
-    fetchProject();
+    fetchProjectAndUser();
   }, [id, navigate]);
 
   if (loading) {
@@ -61,8 +73,8 @@ const ProjectDetailsPage = () => {
     );
   }
 
-  if (!project) {
-    return null; // Should be handled by navigate("/")
+  if (!project || !userId) {
+    return null; // Should be handled by navigate("/") or login redirect
   }
 
   return (
@@ -87,20 +99,10 @@ const ProjectDetailsPage = () => {
                     <CardDescription>Upload your CSV files to analyze them.</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <FileUpload projectId={project.id} userId={supabase.auth.getUser()?.id || ""} />
+                    <FileUpload projectId={project.id} userId={userId} onFileUploadSuccess={() => { /* Optional: refresh data table */ }} />
                   </CardContent>
                 </Card>
-                {/* Placeholder for data table display */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Uploaded Data</CardTitle>
-                    <CardDescription>View your uploaded files and their contents.</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">No files uploaded yet. Upload a CSV above.</p>
-                    {/* <DataTableDisplay projectId={project.id} /> */}
-                  </CardContent>
-                </Card>
+                <DataTableDisplay projectId={project.id} />
               </ScrollArea>
             </ResizablePanel>
             <ResizableHandle withHandle />

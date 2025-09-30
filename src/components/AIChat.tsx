@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send } from "lucide-react";
 
-const AIChat = () => {
+interface AIChatProps {
+  projectId: string; // Add projectId prop
+}
+
+const AIChat: React.FC<AIChatProps> = ({ projectId }) => {
   const [messages, setMessages] = useState<string[]>([]);
   const [input, setInput] = useState<string>("");
 
@@ -15,7 +19,7 @@ const AIChat = () => {
       setTimeout(() => {
         setMessages((prev) => [...prev, `AI: Thinking...`]);
         setTimeout(() => {
-          setMessages((prev) => prev.map((msg, i) => i === prev.length - 1 ? `AI: How can I help you with your data today?` : msg));
+          setMessages((prev) => prev.map((msg, i) => i === prev.length - 1 ? `AI: How can I help you with your data for project ${projectId} today?` : msg));
         }, 1000);
       }, 500);
       setInput("");
