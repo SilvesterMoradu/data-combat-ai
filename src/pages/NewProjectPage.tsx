@@ -1,42 +1,97 @@
-import React from "react";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
+import { showSuccess, showError } from "@/utils/toast";
+import { Loader2, PlusCircle } from "lucide-react";
 
 const NewProjectPage = () => {
+  const navigate = useNavigate();
+  const [projectName, setProjectName] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleCreateProject = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const user = await supabase.auth.getUser();
+    if (!user.data.user) {
+      showError("You must be logged in to create a project.");
+      setLoading(false);
+      navigate("/login");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("projects")
+      .insert({
+        user_id: user.data.user.id,
+        name: projectName,
+        description: projectDescription,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error creating project:", error);
+      showError("Failed to create project. Please try again.");
+    } else if (data) {
+      showSuccess("Project created successfully!");
+      navigate(`/projects/${data.id}`);
+    }
+    setLoading(false);
+  };
+
   return (
-    <div className="flex flex-1 h-full">
-      <ResizablePanelGroup direction="horizontal" className="flex-1 rounded-lg border"> {/* Changed min-h to flex-1 */}
-        <ResizablePanel defaultSize={75}>
-          <div className="flex h-full items-center justify-center p-6 bg-background">
-            <div className="text-center text-muted-foreground text-lg">
-              <h2 className="text-2xl font-bold text-primary mb-2">Project Canvas</h2>
-              <p>Drag and drop elements here to build your project.</p>
-              <p className="text-sm mt-2">Select an element to see its properties on the right.</p>
+    <div className="flex flex-1 items-center justify-center h-full p-4 animate-in fade-in duration-500">
+      <Card className="w-full max-w-lg">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-primary flex items-center">
+            <PlusCircle className="mr-2 h-6 w-6" /> Create New Project
+          </CardTitle>
+          <CardDescription>
+            Start a new data combat mission by giving your project a name and description.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleCreateProject} className="space-y-4">
+            <div>
+              <Label htmlFor="projectName">Project Name</Label>
+              <Input
+                id="projectName"
+                placeholder="e.g., Q3 Sales Analysis"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                required
+              />
             </div>
-          </div>
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={25} minSize={20}>
-          <ScrollArea className="h-full p-6 bg-card">
-            <h2 className="text-xl font-semibold mb-4 text-primary">Properties</h2>
-            <Separator className="mb-4" />
-            <div className="text-muted-foreground text-sm space-y-4">
-              <p>Select an element on the canvas to view and edit its properties here.</p>
-              <p>This section will dynamically update based on your selection.</p>
-              {/* Placeholder for contextual properties */}
-              <div className="border border-dashed p-4 rounded-md text-center">
-                <p>No element selected.</p>
-                <p>Properties will appear here.</p>
-              </div>
+            <div>
+              <Label htmlFor="projectDescription">Description (Optional)</Label>
+              <Textarea
+                id="projectDescription"
+                placeholder="Briefly describe your project's goals or data."
+                value={projectDescription}
+                onChange={(e) => setProjectDescription(e.target.value)}
+                rows={4}
+              />
             </div>
-          </ScrollArea>
-        </ResizablePanel>
-      </ResizablePanelGroup>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating...
+                </>
+              ) : (
+                "Create Project"
+              )}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };

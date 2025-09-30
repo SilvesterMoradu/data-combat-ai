@@ -4,6 +4,7 @@ import { PlusCircle } from "lucide-react";
 import AIChat from "@/components/AIChat";
 import QuickActions from "@/components/QuickActions";
 import TemplateGrid from "@/components/TemplateGrid";
+import ProjectList from "@/components/ProjectList"; // Import ProjectList
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
@@ -27,6 +28,7 @@ const Dashboard = () => {
         </div>
       </div>
 
+      <ProjectList /> {/* Display user's projects */}
       <TemplateGrid />
     </div>
   );

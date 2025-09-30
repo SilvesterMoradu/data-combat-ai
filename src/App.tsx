@@ -9,14 +9,15 @@ import Layout from "./components/layout/Layout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NewProjectPage from "./pages/NewProjectPage";
+import ProjectDetailsPage from "./pages/ProjectDetailsPage"; // Import ProjectDetailsPage
 import { SessionContextProvider } from "./components/auth/SessionContextProvider";
-import { ThemeProvider } from "./components/theme/ThemeProvider"; // Import ThemeProvider
+import { ThemeProvider } from "./components/theme/ThemeProvider";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme"> {/* Wrap with ThemeProvider */}
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -42,6 +43,14 @@ const App = () => (
                 }
               />
               <Route
+                path="/projects/:id" // New route for project details
+                element={
+                  <Layout>
+                    <ProjectDetailsPage />
+                  </Layout>
+                }
+              />
+              <Route
                 path="/integrations"
                 element={
                   <Layout>
@@ -62,7 +71,7 @@ const App = () => (
           </SessionContextProvider>
         </BrowserRouter>
       </TooltipProvider>
-    </ThemeProvider> {/* Close ThemeProvider */}
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
