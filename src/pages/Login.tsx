@@ -23,15 +23,16 @@ const Login = () => {
                 colors: {
                   brand: "hsl(var(--primary))",
                   brandAccent: "hsl(var(--primary-foreground))",
+                  inputPlaceholder: "hsl(var(--primary))", // Red placeholder for light theme
                 },
               },
               dark: { // Specific overrides for dark theme inputs
                 colors: {
                   inputBackground: "hsl(var(--input))",
-                  inputText: "hsl(var(--foreground))",
+                  inputText: "hsl(30 100% 98%)", // Explicitly set to Egg White for dark theme
                   inputBorder: "hsl(var(--border))",
                   inputFocusBorder: "hsl(var(--ring))",
-                  inputPlaceholder: "hsl(var(--muted-foreground))",
+                  inputPlaceholder: "hsl(var(--primary))", // Red placeholder for dark theme
                   // Ensure general text is also light
                   text: "hsl(var(--foreground))",
                 },
