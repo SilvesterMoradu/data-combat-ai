@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
-import { Home, PlusCircle, Puzzle, LayoutTemplate, ArrowUpCircle, Menu } from "lucide-react";
+import { Home, PlusCircle, Puzzle, LayoutTemplate, ArrowUpCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const navItems = [
   { icon: Home, label: "Home", to: "/" },
@@ -11,51 +10,55 @@ const navItems = [
   { icon: LayoutTemplate, label: "Templates", to: "/templates" },
 ];
 
-const Sidebar = () => {
-  const isMobile = useIsMobile();
+interface SidebarProps {
+  isCollapsed: boolean;
+  onToggle: () => void;
+  isMobileView: boolean; // New prop to indicate if it's rendered in a mobile sheet
+}
 
-  const renderSidebarContent = () => (
+const Sidebar = ({ isCollapsed, onToggle, isMobileView }: SidebarProps) => {
+  const renderNavItems = () => (
     <nav className="flex flex-col space-y-2 p-4">
       {navItems.map((item) => (
-        <Button
-          key={item.label}
-          variant="ghost"
-          className="justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-          asChild
-        >
-          <Link to={item.to} className="flex items-center space-x-3">
-            <item.icon className="h-5 w-5" />
-            <span>{item.label}</span>
-          </Link>
-        </Button>
+        <Tooltip key={item.label}>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              className={`justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground ${isCollapsed && !isMobileView ? 'w-10 h-10 p-0' : 'w-full'}`}
+              asChild
+            >
+              <Link to={item.to} className="flex items-center space-x-3">
+                <item.icon className="h-5 w-5" />
+                {(!isCollapsed || isMobileView) && <span>{item.label}</span>} {/* Show label on mobile view or when not collapsed */}
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          {isCollapsed && !isMobileView && <TooltipContent side="right">{item.label}</TooltipContent>} {/* Tooltip only for desktop collapsed */}
+        </Tooltip>
       ))}
       <div className="pt-4">
-        <Button className="w-full bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90">
-          <ArrowUpCircle className="mr-2 h-4 w-4" /> Upgrade
+        <Button className={`bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90 ${isCollapsed && !isMobileView ? 'w-10 h-10 p-0' : 'w-full'}`}>
+          <ArrowUpCircle className={`${isCollapsed && !isMobileView ? 'h-5 w-5' : 'mr-2 h-4 w-4'}`} />
+          {(!isCollapsed || isMobileView) && "Upgrade"} {/* Show label on mobile view or when not collapsed */}
         </Button>
       </div>
     </nav>
   );
 
-  if (isMobile) {
-    return (
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="lg:hidden">
-            <Menu className="h-6 w-6" />
-            <span className="sr-only">Toggle Sidebar</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="p-0 w-64">
-          {renderSidebarContent()}
-        </SheetContent>
-      </Sheet>
-    );
+  if (isMobileView) {
+    return renderNavItems(); // Just render the nav items for mobile sheet
   }
 
+  // Desktop sidebar with collapse functionality
   return (
-    <aside className="hidden lg:block w-64 border-r bg-sidebar-background h-full">
-      {renderSidebarContent()}
+    <aside className={`hidden lg:flex flex-col border-r bg-sidebar-background h-full transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'}`}>
+      <div className="flex items-center justify-end p-4">
+        <Button variant="ghost" size="icon" onClick={onToggle} className="h-8 w-8">
+          {isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
+          <span className="sr-only">Toggle Sidebar</span>
+        </Button>
+      </div>
+      {renderNavItems()}
     </aside>
   );
 };
