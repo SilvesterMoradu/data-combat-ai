@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bell, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,8 +11,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/theme/ModeToggle"; // Import ModeToggle
+import { supabase } from "@/integrations/supabase/client"; // Import supabase client
+import { showSuccess } from "@/utils/toast"; // Import toast utility
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      showSuccess("You have been logged out successfully!");
+      navigate("/login");
+    } else {
+      console.error("Error logging out:", error.message);
+      // Optionally show an error toast here
+    }
+  };
+
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
@@ -47,7 +62,7 @@ const Header = () => {
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Log out</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
