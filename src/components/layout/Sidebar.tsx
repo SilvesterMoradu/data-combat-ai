@@ -15,7 +15,7 @@ interface SidebarProps {
   isCollapsed: boolean;
   onToggle: () => void;
   isMobileView: boolean;
-  currentPageTitle: string; // New prop for current page title
+  currentPageTitle: string;
 }
 
 const Sidebar = ({ isCollapsed, onToggle, isMobileView, currentPageTitle }: SidebarProps) => {
@@ -33,11 +33,11 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileView, currentPageTitle }: Side
                 "transition-colors duration-200 ease-in-out",
                 "rounded-lg py-3",
                 location.pathname === item.to && "bg-sidebar-accent text-sidebar-accent-foreground font-semibold",
-                isCollapsed && !isMobileView ? 'w-10 h-10 p-0 flex items-center justify-center' : 'w-full' // Centering for collapsed state
+                isCollapsed && !isMobileView ? 'w-10 h-10 p-0 flex items-center justify-center' : 'w-full'
               )}
               asChild
             >
-              <Link to={item.to} className={cn("flex items-center", isCollapsed && !isMobileView ? 'justify-center' : 'space-x-3')}> {/* Conditional spacing */}
+              <Link to={item.to} className={cn("flex items-center", isCollapsed && !isMobileView ? 'justify-center' : 'space-x-3')}>
                 <item.icon className="h-5 w-5" />
                 {(!isCollapsed || isMobileView) && <span>{item.label}</span>}
               </Link>
@@ -51,7 +51,7 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileView, currentPageTitle }: Side
           "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90",
           "transition-colors duration-200 ease-in-out",
           "rounded-lg py-3",
-          isCollapsed && !isMobileView ? 'w-10 h-10 p-0 flex items-center justify-center' : 'w-full' // Centering for collapsed state
+          isCollapsed && !isMobileView ? 'w-10 h-10 p-0 flex items-center justify-center' : 'w-full'
         )}>
           <ArrowUpCircle className={cn(isCollapsed && !isMobileView ? 'h-5 w-5' : 'mr-2 h-4 w-4')} />
           {(!isCollapsed || isMobileView) && "Upgrade"}
@@ -64,8 +64,8 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileView, currentPageTitle }: Side
     return (
       <div className="flex flex-col h-full bg-sidebar-background">
         <div className="flex items-center justify-center h-14 border-b border-sidebar-border p-4">
-          <Link to="/" className="flex items-center space-x-2 font-bold text-xl">
-            <span className="text-red-600">Data</span> <span className="text-sidebar-foreground">Combat</span>
+          <Link to="/" className="flex items-center space-x-2 font-bold text-xl text-sidebar-foreground"> {/* Changed text color */}
+            <span className="text-red-600">Data</span> <span>Combat</span>
           </Link>
         </div>
         {renderNavItems()}
@@ -81,7 +81,7 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileView, currentPageTitle }: Side
       <div className="flex items-center justify-between h-14 border-b border-sidebar-border p-4">
         {!isCollapsed && (
           <span className="flex items-center space-x-2 font-bold text-xl text-sidebar-foreground">
-            {currentPageTitle} {/* Display current page title here */}
+            {currentPageTitle}
           </span>
         )}
         <Button variant="ghost" size="icon" onClick={onToggle} className="h-8 w-8 ml-auto">

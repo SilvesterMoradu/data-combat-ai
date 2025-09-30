@@ -97,6 +97,5 @@
 
   body {
     @apply bg-background text-foreground font-sans; /* Apply Segoe UI globally */
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Fallback font stack */
   }
 }

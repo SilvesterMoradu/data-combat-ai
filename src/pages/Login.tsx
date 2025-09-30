@@ -2,10 +2,10 @@ import React from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
-import { useTheme } from "@/components/theme/ThemeProvider"; // Import useTheme
+import { useTheme } from "@/components/theme/ThemeProvider";
 
 const Login = () => {
-  const { theme } = useTheme(); // Get the current theme
+  const { theme } = useTheme();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
@@ -13,7 +13,7 @@ const Login = () => {
         <h1 className="text-3xl font-bold mb-2 text-center text-primary">Unleash Your Data Power.</h1>
         <p className="text-lg text-muted-foreground mb-6 text-center">Join Data Combat for Free!</p>
         <Auth
-          key={theme} // Added key to force re-render on theme change
+          key={theme}
           supabaseClient={supabase}
           providers={["google", "linkedin"]}
           appearance={{
@@ -23,23 +23,22 @@ const Login = () => {
                 colors: {
                   brand: "hsl(var(--primary))",
                   brandAccent: "hsl(var(--primary-foreground))",
-                  inputPlaceholder: "hsl(var(--primary))", // Red placeholder for light theme
+                  inputPlaceholder: "hsl(var(--primary))",
                 },
               },
-              dark: { // Specific overrides for dark theme inputs
+              dark: {
                 colors: {
                   inputBackground: "hsl(var(--input))",
-                  inputText: "hsl(30 100% 98%)", // Explicitly set to Egg White for dark theme
+                  inputText: "hsl(var(--foreground))", // Consistent with global foreground
                   inputBorder: "hsl(var(--border))",
                   inputFocusBorder: "hsl(var(--ring))",
-                  inputPlaceholder: "hsl(var(--primary))", // Red placeholder for dark theme
-                  // Ensure general text is also light
+                  inputPlaceholder: "hsl(var(--primary))",
                   text: "hsl(var(--foreground))",
                 },
               },
             },
           }}
-          theme={theme === "dark" ? "dark" : "light"} // Dynamically set theme
+          theme={theme === "dark" ? "dark" : "light"}
           redirectTo={window.location.origin}
           localization={{
             variables: {
@@ -64,7 +63,7 @@ const Login = () => {
               },
             },
           }}
-          defaultView="sign_in" // Explicitly set default view to sign_in
+          defaultView="sign_in"
         />
         <p className="text-center text-sm text-muted-foreground mt-4">
           Start your 15-day free trial today! No credit card required.
