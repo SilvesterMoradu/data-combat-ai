@@ -10,7 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const NewProjectPage = () => {
   return (
     <div className="flex flex-1 h-full">
-      <ResizablePanelGroup direction="horizontal" className="min-h-[calc(100vh-140px)] rounded-lg border">
+      <ResizablePanelGroup direction="horizontal" className="flex-1 rounded-lg border"> {/* Changed min-h to flex-1 */}
         <ResizablePanel defaultSize={75}>
           <div className="flex h-full items-center justify-center p-6 bg-background">
             <div className="text-center text-muted-foreground text-lg">
