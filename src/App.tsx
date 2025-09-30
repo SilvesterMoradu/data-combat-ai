@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Layout from "./components/layout/Layout";
+import Login from "./pages/Login"; // We'll create this next
 
 const queryClient = new QueryClient();
 
@@ -15,8 +17,40 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={
+              <Layout>
+                <Index />
+              </Layout>
+            }
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route
+            path="/new-project"
+            element={
+              <Layout>
+                <div className="flex items-center justify-center h-full text-2xl font-bold">New Project Page</div>
+              </Layout>
+            }
+          />
+          <Route
+            path="/integrations"
+            element={
+              <Layout>
+                <div className="flex items-center justify-center h-full text-2xl font-bold">Integrations Page</div>
+              </Layout>
+            }
+          />
+          <Route
+            path="/templates"
+            element={
+              <Layout>
+                <div className="flex items-center justify-center h-full text-2xl font-bold">Templates Page</div>
+              </Layout>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
