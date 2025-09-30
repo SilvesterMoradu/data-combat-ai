@@ -9,7 +9,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { ScrollArea } from "@/components/ui/scroll-area";
 import FileUpload from "@/components/FileUpload";
 import AIChat from "@/components/AIChat";
-import DataTableDisplay from "@/components/DataTableDisplay"; // Import DataTableDisplay
+import DataTableDisplay from "@/components/DataTableDisplay";
 
 interface Project {
   id: string;
@@ -116,7 +116,7 @@ const ProjectDetailsPage = () => {
                     <CardDescription>Ask your AI assistant about your data.</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <AIChat projectId={project.id} />
+                    <AIChat projectId={project.id} userId={userId} /> {/* Pass userId here */}
                   </CardContent>
                 </Card>
               </ScrollArea>
