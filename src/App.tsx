@@ -3,10 +3,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import Index from "./pages/Index"; // Renaming this to LandingPage for clarity
 import NotFound from "./pages/NotFound";
 import Layout from "./components/layout/Layout";
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard"; // Import the new Dashboard
 import { SessionContextProvider } from "./components/auth/SessionContextProvider";
 
 const queryClient = new QueryClient();
@@ -24,7 +25,7 @@ const App = () => (
               path="/"
               element={
                 <Layout>
-                  <Index />
+                  <Dashboard /> {/* Set Dashboard as the default authenticated route */}
                 </Layout>
               }
             />
