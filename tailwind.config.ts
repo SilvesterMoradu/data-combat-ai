@@ -7,6 +7,8 @@ export default {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "../../node_modules/@supabase/auth-ui-react/**/*.{ts,tsx}", // Add this line
+    "../../node_modules/@supabase/auth-ui-shared/**/*.{ts,tsx}", // Add this line
   ],
   prefix: "",
   theme: {
