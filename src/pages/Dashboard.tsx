@@ -18,16 +18,17 @@ const Dashboard = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
+      {/* Moved TemplateGrid here */}
+      <TemplateGrid />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8"> {/* Changed to lg:grid-cols-2 */}
+        <div className="lg:col-span-1"> {/* Changed to lg:col-span-1 */}
           <QuickActions />
         </div>
-        <div className="lg:col-span-1 h-[400px]"> {/* Fixed height for chat */}
+        <div className="lg:col-span-1 h-[400px]"> {/* Changed to lg:col-span-1 */}
           <AIChat />
         </div>
       </div>
-
-      <TemplateGrid />
     </div>
   );
 };
