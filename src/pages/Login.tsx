@@ -27,13 +27,11 @@ const Login = () => {
               },
               dark: { // Specific overrides for dark theme inputs
                 colors: {
-                  input: {
-                    background: "hsl(var(--input))",
-                    text: "hsl(var(--foreground))",
-                    border: "hsl(var(--border))",
-                    focusBorder: "hsl(var(--ring))",
-                    placeholder: "hsl(var(--muted-foreground))",
-                  },
+                  inputBackground: "hsl(var(--input))",
+                  inputText: "hsl(var(--foreground))",
+                  inputBorder: "hsl(var(--border))",
+                  inputFocusBorder: "hsl(var(--ring))",
+                  inputPlaceholder: "hsl(var(--muted-foreground))",
                   // Ensure general text is also light
                   text: "hsl(var(--foreground))",
                 },
