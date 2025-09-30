@@ -2,8 +2,11 @@ import React from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
+import { useTheme } from "@/components/theme/ThemeProvider"; // Import useTheme
 
 const Login = () => {
+  const { theme } = useTheme(); // Get the current theme
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md p-8 bg-card rounded-lg shadow-lg border border-border">
@@ -23,7 +26,7 @@ const Login = () => {
               },
             },
           }}
-          theme="light"
+          theme={theme === "dark" ? "dark" : "light"} // Dynamically set theme
           redirectTo={window.location.origin}
           localization={{
             variables: {
