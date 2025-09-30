@@ -22,7 +22,7 @@ const Dashboard = () => {
         <div className="lg:col-span-2">
           <QuickActions />
         </div>
-        <div className="lg:col-span-1 h-[400px]">
+        <div className="lg:col-span-1"> {/* Removed h-[400px] from here */}
           <AIChat />
         </div>
       </div>
