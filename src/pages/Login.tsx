@@ -7,7 +7,8 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md p-8 bg-card rounded-lg shadow-lg border border-border">
-        <h1 className="text-3xl font-bold mb-6 text-center text-primary">Login to Data Combat</h1>
+        <h1 className="text-3xl font-bold mb-2 text-center text-primary">Unleash Your Data Power.</h1>
+        <p className="text-lg text-muted-foreground mb-6 text-center">Join Data Combat for Free!</p>
         <Auth
           supabaseClient={supabase}
           providers={["google", "linkedin"]}
@@ -49,7 +50,7 @@ const Login = () => {
           }}
         />
         <p className="text-center text-sm text-muted-foreground mt-4">
-          Sign up for a 15-day free trial!
+          Start your 15-day free trial today! No credit card required.
         </p>
       </div>
     </div>
