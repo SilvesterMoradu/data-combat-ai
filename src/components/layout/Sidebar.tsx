@@ -1,8 +1,8 @@
-import { Link, useLocation } from "react-router-dom"; // Import useLocation
+import { Link, useLocation } from "react-router-dom";
 import { Home, PlusCircle, Puzzle, LayoutTemplate, ArrowUpCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils"; // Import cn utility
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { icon: Home, label: "Home", to: "/" },
@@ -18,7 +18,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isCollapsed, onToggle, isMobileView }: SidebarProps) => {
-  const location = useLocation(); // Get current location
+  const location = useLocation();
 
   const renderNavItems = () => (
     <nav className="flex flex-col space-y-2 p-4">
@@ -29,14 +29,14 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileView }: SidebarProps) => {
               variant="ghost"
               className={cn(
                 "justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                "transition-colors duration-200 ease-in-out", // Smooth transition
-                "rounded-lg py-3", // Modern button styling
-                location.pathname === item.to && "bg-sidebar-accent text-sidebar-accent-foreground font-semibold", // Active state
-                isCollapsed && !isMobileView ? 'w-10 h-10 p-0' : 'w-full'
+                "transition-colors duration-200 ease-in-out",
+                "rounded-lg py-3",
+                location.pathname === item.to && "bg-sidebar-accent text-sidebar-accent-foreground font-semibold",
+                isCollapsed && !isMobileView ? 'w-10 h-10 p-0 flex items-center justify-center' : 'w-full' // Centering for collapsed state
               )}
               asChild
             >
-              <Link to={item.to} className="flex items-center space-x-3">
+              <Link to={item.to} className={cn("flex items-center", isCollapsed && !isMobileView ? 'justify-center' : 'space-x-3')}> {/* Conditional spacing */}
                 <item.icon className="h-5 w-5" />
                 {(!isCollapsed || isMobileView) && <span>{item.label}</span>}
               </Link>
@@ -48,9 +48,9 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileView }: SidebarProps) => {
       <div className="pt-4">
         <Button className={cn(
           "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90",
-          "transition-colors duration-200 ease-in-out", // Smooth transition
-          "rounded-lg py-3", // Modern button styling
-          isCollapsed && !isMobileView ? 'w-10 h-10 p-0' : 'w-full'
+          "transition-colors duration-200 ease-in-out",
+          "rounded-lg py-3",
+          isCollapsed && !isMobileView ? 'w-10 h-10 p-0 flex items-center justify-center' : 'w-full' // Centering for collapsed state
         )}>
           <ArrowUpCircle className={cn(isCollapsed && !isMobileView ? 'h-5 w-5' : 'mr-2 h-4 w-4')} />
           {(!isCollapsed || isMobileView) && "Upgrade"}
@@ -75,7 +75,7 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileView }: SidebarProps) => {
   return (
     <aside className={cn(
       "hidden lg:flex flex-col border-r border-sidebar-border bg-sidebar-background h-full transition-all duration-300",
-      isCollapsed ? 'w-16' : 'w-72' // Wider when not collapsed
+      isCollapsed ? 'w-16' : 'w-72'
     )}>
       <div className="flex items-center justify-between h-14 border-b border-sidebar-border p-4">
         {!isCollapsed && (
@@ -83,7 +83,7 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileView }: SidebarProps) => {
             <span className="text-red-600">Data</span> <span className="text-sidebar-foreground">Combat</span>
           </Link>
         )}
-        <Button variant="ghost" size="icon" onClick={onToggle} className="h-8 w-8 ml-auto"> {/* Adjusted button position */}
+        <Button variant="ghost" size="icon" onClick={onToggle} className="h-8 w-8 ml-auto">
           {isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
           <span className="sr-only">Toggle Sidebar</span>
         </Button>

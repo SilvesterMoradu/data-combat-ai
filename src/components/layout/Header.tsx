@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Bell, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,8 +14,13 @@ import { ModeToggle } from "@/components/theme/ModeToggle";
 import { supabase } from "@/integrations/supabase/client";
 import { showSuccess } from "@/utils/toast";
 
-const Header = () => {
+interface HeaderProps {
+  isCollapsed: boolean;
+}
+
+const Header = ({ isCollapsed }: HeaderProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -28,12 +33,40 @@ const Header = () => {
     }
   };
 
+  // Map paths to titles
+  const getPageTitle = (pathname: string) => {
+    switch (pathname) {
+      case "/":
+        return "Home";
+      case "/new-project":
+        return "New Project";
+      case "/integrations":
+        return "Integrations";
+      case "/templates":
+        return "Templates";
+      case "/settings":
+        return "Settings";
+      case "/login":
+        return "Login";
+      default:
+        return "Data Combat"; // Default to app name if path not found
+    }
+  };
+
+  const currentPageTitle = getPageTitle(location.pathname);
+
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2 font-bold text-xl">
-          <span className="text-red-600">Data</span> <span className="text-foreground">Combat</span> {/* Red and Black logo styling */}
-        </Link>
+        {isCollapsed ? (
+          <span className="flex items-center space-x-2 font-bold text-xl text-foreground">
+            {currentPageTitle}
+          </span>
+        ) : (
+          <Link to="/" className="flex items-center space-x-2 font-bold text-xl">
+            <span className="text-red-600">Data</span> <span className="text-foreground">Combat</span>
+          </Link>
+        )}
         <div className="flex items-center space-x-4">
           <ModeToggle />
           <Button variant="ghost" size="icon">
