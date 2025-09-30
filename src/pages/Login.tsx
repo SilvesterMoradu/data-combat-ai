@@ -24,15 +24,11 @@ const Login = () => {
                   brandAccent: "hsl(var(--primary-foreground))",
                 },
               },
-              dark: { // Specific overrides for dark theme inputs using hardcoded HSL values
+              dark: { // Specific overrides for dark theme inputs
                 colors: {
-                  // General text color for the entire Auth component
-                  text: "hsl(210 40% 98%)", // Corresponds to --foreground
-                  // Input specific colors
-                  inputBackground: "hsl(217.2 32.6% 25%)", // Corresponds to --input
-                  inputText: "hsl(210 40% 98%)", // Corresponds to --foreground
-                  inputBorder: "hsl(217.2 32.6% 25%)", // Corresponds to --border (using input color for consistency)
-                  inputPlaceholder: "hsl(210 40% 80%)", // Corresponds to --muted-foreground
+                  inputBackground: "hsl(var(--input))",
+                  inputText: "hsl(var(--foreground))",
+                  text: "hsl(var(--foreground))", // Ensure general text is also light
                 },
               },
             },
