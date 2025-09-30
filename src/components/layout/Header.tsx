@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ModeToggle } from "@/components/theme/ModeToggle"; // Import ModeToggle
 
 const Header = () => {
   return (
@@ -19,6 +20,7 @@ const Header = () => {
           <span className="text-red-600">Data</span> Combat
         </Link>
         <div className="flex items-center space-x-4">
+          <ModeToggle /> {/* Add the ModeToggle component here */}
           <Button variant="ghost" size="icon">
             <Bell className="h-5 w-5" />
             <span className="sr-only">Notifications</span>
