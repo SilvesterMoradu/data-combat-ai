@@ -24,6 +24,13 @@ const Login = () => {
                   brandAccent: "hsl(var(--primary-foreground))",
                 },
               },
+              dark: { // Specific overrides for dark theme inputs
+                colors: {
+                  inputBackground: "hsl(var(--input))",
+                  inputText: "hsl(var(--foreground))",
+                  text: "hsl(var(--foreground))", // Ensure general text is also light
+                },
+              },
             },
           }}
           theme={theme === "dark" ? "dark" : "light"} // Dynamically set theme
