@@ -15,9 +15,10 @@ interface SidebarProps {
   isCollapsed: boolean;
   onToggle: () => void;
   isMobileView: boolean;
+  currentPageTitle: string; // New prop for current page title
 }
 
-const Sidebar = ({ isCollapsed, onToggle, isMobileView }: SidebarProps) => {
+const Sidebar = ({ isCollapsed, onToggle, isMobileView, currentPageTitle }: SidebarProps) => {
   const location = useLocation();
 
   const renderNavItems = () => (
@@ -79,9 +80,9 @@ const Sidebar = ({ isCollapsed, onToggle, isMobileView }: SidebarProps) => {
     )}>
       <div className="flex items-center justify-between h-14 border-b border-sidebar-border p-4">
         {!isCollapsed && (
-          <Link to="/" className="flex items-center space-x-2 font-bold text-xl">
-            <span className="text-red-600">Data</span> <span className="text-sidebar-foreground">Combat</span>
-          </Link>
+          <span className="flex items-center space-x-2 font-bold text-xl text-sidebar-foreground">
+            {currentPageTitle} {/* Display current page title here */}
+          </span>
         )}
         <Button variant="ghost" size="icon" onClick={onToggle} className="h-8 w-8 ml-auto">
           {isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}

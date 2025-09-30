@@ -20,7 +20,6 @@ interface HeaderProps {
 
 const Header = ({ isCollapsed }: HeaderProps) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -33,33 +32,11 @@ const Header = ({ isCollapsed }: HeaderProps) => {
     }
   };
 
-  // Map paths to titles
-  const getPageTitle = (pathname: string) => {
-    switch (pathname) {
-      case "/":
-        return "Dashboard";
-      case "/new-project":
-        return "New Project";
-      case "/integrations":
-        return "Integrations";
-      case "/templates":
-        return "Templates";
-      case "/settings":
-        return "Settings";
-      case "/login":
-        return "Login";
-      default:
-        return "Data Combat"; // Default to app name if path not found
-    }
-  };
-
-  const currentPageTitle = getPageTitle(location.pathname);
-
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
         <span className="flex items-center space-x-2 font-bold text-xl text-foreground">
-          {currentPageTitle}
+          Data Combat
         </span>
         <div className="flex items-center space-x-4">
           <ModeToggle />
