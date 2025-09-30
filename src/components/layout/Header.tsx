@@ -10,9 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ModeToggle } from "@/components/theme/ModeToggle"; // Import ModeToggle
-import { supabase } from "@/integrations/supabase/client"; // Import supabase client
-import { showSuccess } from "@/utils/toast"; // Import toast utility
+import { ModeToggle } from "@/components/theme/ModeToggle";
+import { supabase } from "@/integrations/supabase/client";
+import { showSuccess } from "@/utils/toast";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -31,11 +31,11 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2 font-bold text-xl text-primary">
-          <span className="text-red-600">Data</span> Combat
+        <Link to="/" className="flex items-center space-x-2 font-bold text-xl">
+          <span className="text-red-600">Data</span> <span className="text-foreground">Combat</span> {/* Red and Black logo styling */}
         </Link>
         <div className="flex items-center space-x-4">
-          <ModeToggle /> {/* Add the ModeToggle component here */}
+          <ModeToggle />
           <Button variant="ghost" size="icon">
             <Bell className="h-5 w-5" />
             <span className="sr-only">Notifications</span>

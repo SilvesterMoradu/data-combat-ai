@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-primary">Dashboard</h1>
         <Button asChild>
@@ -22,7 +22,7 @@ const Dashboard = () => {
         <div className="lg:col-span-2">
           <QuickActions />
         </div>
-        <div className="lg:col-span-1"> {/* Removed h-[400px] from here */}
+        <div className="lg:col-span-1">
           <AIChat />
         </div>
       </div>

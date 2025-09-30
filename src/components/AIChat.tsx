@@ -23,7 +23,7 @@ const AIChat = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-card rounded-lg shadow-lg border border-border p-4">
+    <div className="flex flex-col h-full bg-card rounded-lg shadow-lg border border-border p-4 animate-in fade-in duration-500">
       <h2 className="text-xl font-semibold mb-4 text-primary">AI Chat</h2>
       <ScrollArea className="flex-1 p-2 mb-4 border rounded-md bg-background">
         {messages.length === 0 ? (

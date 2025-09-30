@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme"; // Import defaultTheme to extend font-sans
 
 export default {
   darkMode: ["class"],
@@ -7,8 +8,8 @@ export default {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
-    "../../node_modules/@supabase/auth-ui-react/**/*.{ts,tsx}", // Add this line
-    "../../node_modules/@supabase/auth-ui-shared/**/*.{ts,tsx}", // Add this line
+    "../../node_modules/@supabase/auth-ui-react/**/*.{ts,tsx}",
+    "../../node_modules/@supabase/auth-ui-shared/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -20,6 +21,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["'Segoe UI'", ...fontFamily.sans], // Add Segoe UI to the sans-serif font stack
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -94,5 +98,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate")], // Ensure tailwindcss-animate is included
 } satisfies Config;

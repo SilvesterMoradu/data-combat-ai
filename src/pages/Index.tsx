@@ -2,7 +2,7 @@ import { MadeWithDyad } from "@/components/made-with-dyad";
 
 const Index = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center p-4">
+    <div className="flex flex-col items-center justify-center h-full text-center p-4 animate-in fade-in duration-500">
       <h1 className="text-5xl font-extrabold mb-4 text-primary">
         <span className="text-red-600">Data</span> Combat
       </h1>

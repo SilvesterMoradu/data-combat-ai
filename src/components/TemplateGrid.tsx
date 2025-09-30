@@ -38,7 +38,7 @@ const TemplateGrid = () => {
   };
 
   return (
-    <div className="bg-card rounded-lg shadow-lg border border-border p-4">
+    <div className="bg-card rounded-lg shadow-lg border border-border p-4 animate-in fade-in duration-500">
       <h2 className="text-xl font-semibold mb-4 text-primary">Start from a Template</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {templates.map((template) => (

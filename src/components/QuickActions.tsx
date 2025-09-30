@@ -9,7 +9,7 @@ const QuickActions = () => {
   };
 
   return (
-    <div className="bg-card rounded-lg shadow-lg border border-border p-4">
+    <div className="bg-card rounded-lg shadow-lg border border-border p-4 animate-in fade-in duration-500">
       <h2 className="text-xl font-semibold mb-4 text-primary">Quick Actions</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Button onClick={() => handleAction("AI Analyze")} className="h-24 flex flex-col justify-center items-center text-lg">
