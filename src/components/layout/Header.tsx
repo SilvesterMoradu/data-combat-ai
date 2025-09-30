@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Bell, User } from "lucide-react";
+import { Bell, User, Sword } from "lucide-react"; // Import Sword icon
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -35,9 +35,10 @@ const Header = ({ isCollapsed }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
-        <span className="flex items-center space-x-2 font-bold text-xl text-foreground">
-          Data Combat
-        </span>
+        <Link to="/" className="flex items-center space-x-2 font-extrabold text-2xl bg-gradient-to-r from-red-600 to-orange-500 text-transparent bg-clip-text">
+          <Sword className="h-6 w-6 text-red-600" /> {/* Cool Sword logo */}
+          <span>Data Combat</span>
+        </Link>
         <div className="flex items-center space-x-4">
           <ModeToggle />
           <Button variant="ghost" size="icon">
