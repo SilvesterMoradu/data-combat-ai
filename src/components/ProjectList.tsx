@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { showError } from "@/utils/toast";
 import ProjectCard from "./ProjectCard";
 import { Loader2 } from "lucide-react";
+import { useFirebaseUser } from "@/components/auth/FirebaseAuthProvider"; // Import Firebase user hook
+import { useNavigate } from "react-router-dom";
 
 interface Project {
   id: string;
@@ -14,21 +16,26 @@ interface Project {
 const ProjectList = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user, loading: userLoading } = useFirebaseUser(); // Get Firebase user
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProjects = async () => {
-      setLoading(true);
-      const user = await supabase.auth.getUser();
-      if (!user.data.user) {
+      if (userLoading) return; // Wait for user loading to complete
+
+      if (!user) {
         showError("You must be logged in to view projects.");
         setLoading(false);
+        navigate("/login");
         return;
       }
 
+      setLoading(true);
       const { data, error } = await supabase
         .from("projects")
         .select("*")
-        .eq("user_id", user.data.user.id)
+        .eq("user_id", user.uid) // Use Firebase user ID
         .order("created_at", { ascending: false });
 
       if (error) {
@@ -41,9 +48,9 @@ const ProjectList = () => {
     };
 
     fetchProjects();
-  }, []);
+  }, [user, userLoading, navigate]);
 
-  if (loading) {
+  if (loading || userLoading) {
     return (
       <div className="flex items-center justify-center p-8">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />

@@ -8,19 +8,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import { showSuccess, showError } from "@/utils/toast";
 import { Loader2, PlusCircle } from "lucide-react";
+import { useFirebaseUser } from "@/components/auth/FirebaseAuthProvider"; // Import Firebase user hook
 
 const NewProjectPage = () => {
   const navigate = useNavigate();
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const { user } = useFirebaseUser(); // Get Firebase user
 
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const user = await supabase.auth.getUser();
-    if (!user.data.user) {
+    if (!user) {
       showError("You must be logged in to create a project.");
       setLoading(false);
       navigate("/login");
@@ -30,7 +31,7 @@ const NewProjectPage = () => {
     const { data, error } = await supabase
       .from("projects")
       .insert({
-        user_id: user.data.user.id,
+        user_id: user.uid, // Use Firebase user ID
         name: projectName,
         description: projectDescription,
       })

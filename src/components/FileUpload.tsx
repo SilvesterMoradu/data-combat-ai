@@ -5,16 +5,19 @@ import { Label } from "@/components/ui/label";
 import { Loader2, UploadCloud } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { showSuccess, showError } from "@/utils/toast";
+import { useFirebaseUser } from "@/components/auth/FirebaseAuthProvider"; // Import Firebase user hook
+import { useNavigate } from "react-router-dom";
 
 interface FileUploadProps {
   projectId: string;
-  userId: string;
   onFileUploadSuccess?: () => void; // Callback to refresh file list
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ projectId, userId, onFileUploadSuccess }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ projectId, onFileUploadSuccess }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const { user } = useFirebaseUser(); // Get Firebase user
+  const navigate = useNavigate();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -30,8 +33,14 @@ const FileUpload: React.FC<FileUploadProps> = ({ projectId, userId, onFileUpload
       return;
     }
 
+    if (!user) {
+      showError("You must be logged in to upload files.");
+      navigate("/login");
+      return;
+    }
+
     setLoading(true);
-    const filePath = `${userId}/${projectId}/${selectedFile.name}`;
+    const filePath = `${user.uid}/${projectId}/${selectedFile.name}`; // Use Firebase user ID
 
     try {
       // 1. Upload file to Supabase Storage
@@ -50,7 +59,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ projectId, userId, onFileUpload
       // 2. Insert file metadata into the 'files' table
       const { error: dbError } = await supabase.from("files").insert({
         project_id: projectId,
-        user_id: userId,
+        user_id: user.uid, // Use Firebase user ID
         file_name: selectedFile.name,
         storage_path: filePath,
         mime_type: selectedFile.type,

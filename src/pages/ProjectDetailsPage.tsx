@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import FileUpload from "@/components/FileUpload";
 import AIChat from "@/components/AIChat";
 import DataTableDisplay from "@/components/DataTableDisplay";
+import { useFirebaseUser } from "@/components/auth/FirebaseAuthProvider"; // Import Firebase user hook
 
 interface Project {
   id: string;
@@ -23,25 +24,25 @@ const ProjectDetailsPage = () => {
   const navigate = useNavigate();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
-  const [userId, setUserId] = useState<string | null>(null);
+  const { user, loading: userLoading } = useFirebaseUser(); // Get Firebase user
 
   useEffect(() => {
-    const fetchProjectAndUser = async () => {
+    const fetchProject = async () => {
       if (!id) {
         showError("Project ID is missing.");
         navigate("/");
         return;
       }
-      setLoading(true);
+      if (userLoading) return; // Wait for user loading to complete
 
-      const { data: userData, error: userError } = await supabase.auth.getUser();
-      if (userError || !userData.user) {
+      if (!user) {
         showError("You must be logged in to view project details.");
         navigate("/login");
         setLoading(false);
         return;
       }
-      setUserId(userData.user.id);
+
+      setLoading(true);
 
       const { data, error } = await supabase
         .from("projects")
@@ -62,10 +63,10 @@ const ProjectDetailsPage = () => {
       setLoading(false);
     };
 
-    fetchProjectAndUser();
-  }, [id, navigate]);
+    fetchProject();
+  }, [id, navigate, user, userLoading]);
 
-  if (loading) {
+  if (loading || userLoading) {
     return (
       <div className="flex flex-1 items-center justify-center h-full">
         <p className="text-muted-foreground">Loading project...</p>
@@ -73,7 +74,7 @@ const ProjectDetailsPage = () => {
     );
   }
 
-  if (!project || !userId) {
+  if (!project || !user) {
     return null; // Should be handled by navigate("/") or login redirect
   }
 
@@ -99,7 +100,7 @@ const ProjectDetailsPage = () => {
                     <CardDescription>Upload your CSV files to analyze them.</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <FileUpload projectId={project.id} userId={userId} onFileUploadSuccess={() => { /* Optional: refresh data table */ }} />
+                    <FileUpload projectId={project.id} onFileUploadSuccess={() => { /* Optional: refresh data table */ }} />
                   </CardContent>
                 </Card>
                 <DataTableDisplay projectId={project.id} />
@@ -116,7 +117,7 @@ const ProjectDetailsPage = () => {
                     <CardDescription>Ask your AI assistant about your data.</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <AIChat projectId={project.id} userId={userId} /> {/* Pass userId here */}
+                    <AIChat projectId={project.id} />
                   </CardContent>
                 </Card>
               </ScrollArea>

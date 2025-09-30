@@ -9,8 +9,8 @@ import Layout from "./components/layout/Layout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NewProjectPage from "./pages/NewProjectPage";
-import ProjectDetailsPage from "./pages/ProjectDetailsPage"; // Import ProjectDetailsPage
-import { SessionContextProvider } from "./components/auth/SessionContextProvider";
+import ProjectDetailsPage from "./pages/ProjectDetailsPage";
+import { FirebaseAuthProvider } from "./components/auth/FirebaseAuthProvider"; // Updated import
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 
 const queryClient = new QueryClient();
@@ -22,7 +22,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <SessionContextProvider>
+          <FirebaseAuthProvider> {/* Updated provider */}
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route
@@ -43,7 +43,7 @@ const App = () => (
                 }
               />
               <Route
-                path="/projects/:id" // New route for project details
+                path="/projects/:id"
                 element={
                   <Layout>
                     <ProjectDetailsPage />
@@ -68,7 +68,7 @@ const App = () => (
               />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </SessionContextProvider>
+          </FirebaseAuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
