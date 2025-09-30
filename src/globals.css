@@ -98,4 +98,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  textarea {
+    @apply text-foreground; /* Ensure textarea text color matches foreground */
+  }
 }
