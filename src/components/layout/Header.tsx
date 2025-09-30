@@ -37,7 +37,7 @@ const Header = ({ isCollapsed }: HeaderProps) => {
   const getPageTitle = (pathname: string) => {
     switch (pathname) {
       case "/":
-        return "Home";
+        return "Dashboard";
       case "/new-project":
         return "New Project";
       case "/integrations":
@@ -58,15 +58,9 @@ const Header = ({ isCollapsed }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
-        {isCollapsed ? (
-          <span className="flex items-center space-x-2 font-bold text-xl text-foreground">
-            {currentPageTitle}
-          </span>
-        ) : (
-          <Link to="/" className="flex items-center space-x-2 font-bold text-xl">
-            <span className="text-red-600">Data</span> <span className="text-foreground">Combat</span>
-          </Link>
-        )}
+        <span className="flex items-center space-x-2 font-bold text-xl text-foreground">
+          {currentPageTitle}
+        </span>
         <div className="flex items-center space-x-4">
           <ModeToggle />
           <Button variant="ghost" size="icon">
